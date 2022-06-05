@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarywork.HelloController">
+  <tabs>
+    <Tab text="Перечень книг">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Фильтрация">
+                        <items>
+                              <Menu mnemonicParsing="false" text="Сортировка по статусу">
+                                <items>
+                                    <RadioMenuItem fx:id="rimIsStatus" mnemonicParsing="false" onAction="#onFiltrationOfStatus" text="в наличии">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="FilterStatus" />
+                                       </toggleGroup>
+                                    </RadioMenuItem>
+                                    <RadioMenuItem fx:id="rimWritingOffStatus" mnemonicParsing="false" onAction="#onFiltrationOfStatus" text="списаны" toggleGroup="$FilterStatus">
+                                    </RadioMenuItem>
+                                    <RadioMenuItem fx:id="rimIssueStatus" mnemonicParsing="false" onAction="#onFiltrationOfStatus" text="выданы" toggleGroup="$FilterStatus">
+                                    </RadioMenuItem>
+                                    <RadioMenuItem fx:id="rimAllStatus" mnemonicParsing="false" onAction="#onFiltrationOfStatus" text="все" toggleGroup="$FilterStatus">
+                                    </RadioMenuItem>
+                                </items>
+                                 <accelerator>
+                                    <KeyCodeCombination alt="DOWN" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </Menu>
+                              <Menu mnemonicParsing="false" text="Поиск по названию произведения">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="произведение">
+                                       <graphic>
+                                          <TextField fx:id="tfFindBook">
+                                             <contextMenu>
+                                                <ContextMenu>
+                                                  <items>
+                                                    <MenuItem mnemonicParsing="false" onAction="#onFiltrationOfBook" text="Поиск" />
+                                                  </items>
+                                                </ContextMenu>
+                                             </contextMenu>
+                                          </TextField>
+                                       </graphic>
+                                    </MenuItem>
+                                </items>
+                                 <accelerator>
+                                    <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </Menu>
+                              <MenuItem mnemonicParsing="false" onAction="#onSelectAll" text="Вывести все" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Работа с данными">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onWrittingOffCB" text="Списать экземпляр">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="DOWN" code="C" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#onUpdateCB" text="Редактировать данные об издании">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="U" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#onCreateCB" text="Привоз книг">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                          </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Дополнительно">
+                        <items>
+                          <MenuItem fx:id="miCBOpenTable" mnemonicParsing="false" onAction="#onOpenHRCopyBook" text="Вывести историю читателей" />
+                              <MenuItem fx:id="miCBCloseTable" mnemonicParsing="false" onAction="#onCloseHRCopyBook" text="Скрыть историю читателей" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </top>
+               <center>
+                  <TableView fx:id="tvListBooks" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="tcCBId" minWidth="-1.0" prefWidth="79.19997864961624" text="Инв. номер" />
+                      <TableColumn fx:id="tcCBBook" minWidth="-1.0" prefWidth="373.6000518798828" text="Произведение" />
+                        <TableColumn fx:id="tcCBEdition" minWidth="-1.0" prefWidth="141.60003662109375" text="Издание" />
+                        <TableColumn fx:id="tcCBStatus" minWidth="-1.0" prefWidth="92.79998779296875" text="Статус" />
+                    </columns>
+                  </TableView>
+               </center>
+               <bottom>
+                  <TableView fx:id="tvHistoryRCB" prefHeight="4.0" prefWidth="1000.0" visible="false" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="tcCBDateIssue" prefWidth="75.0" text="Дата выдачи" />
+                      <TableColumn fx:id="tcCBDateReturn" prefWidth="75.0" text="Дата возврата" />
+                        <TableColumn fx:id="tcCBSubscriber" prefWidth="75.0" text="Абонент" />
+                    </columns>
+                  </TableView>
+               </bottom>
+               <right>
+                  <VBox prefHeight="346.0" prefWidth="303.0" spacing="10.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <TextArea fx:id="taAllInfCB" editable="false" maxWidth="1.7976931348623157E308" wrapText="true" VBox.vgrow="ALWAYS" />
+                        <ImageView fx:id="ivImage" fitHeight="300.0" fitWidth="300.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </right>
+            </BorderPane>
+         </content>
+    </Tab>
+    <Tab text="Каталог книг">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Поиск по параметрам">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="по названию">
+                                 <graphic>
+                                    <TextField fx:id="tfFindNameBook">
+                                       <contextMenu>
+                                          <ContextMenu>
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" onAction="#onFiltrationOfNameBook" text="Поиск" />
+                                            </items>
+                                          </ContextMenu>
+                                       </contextMenu></TextField>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" text="по автору">
+                                 <graphic>
+                                    <TextField fx:id="tfFindAuthor">
+                                       <contextMenu>
+                                          <ContextMenu>
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" onAction="#onFiltrationOfAuthor" text="Поиск" />
+                                            </items>
+                                          </ContextMenu>
+                                       </contextMenu></TextField>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" text="по жанру">
+                                 <graphic>
+                                    <TextField fx:id="tfFindGenre">
+                                       <contextMenu>
+                                          <ContextMenu>
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" onAction="#onFiltrationOfGenre" text="Поиск" />
+                                            </items>
+                                          </ContextMenu>
+                                       </contextMenu></TextField>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#onSelectAll" text="Вывести все" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Редактирование">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onEditBook" text="Редактировать данные о произведении">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="U" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator></MenuItem>
+                          </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Дополнительно">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onOpenCatalogCards" text="Каталожные карточки" />
+                              <MenuItem mnemonicParsing="false" onAction="#onOpenHRBook" text="Вывести историю читателей" />
+                              <MenuItem mnemonicParsing="false" onAction="#onCloseHRBook" text="Скрыть историю читателей" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </top>
+               <center>
+                  <TableView fx:id="tvCatalog" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="tcBookName" prefWidth="383.1999939084053" text="Произведение" />
+                      <TableColumn fx:id="tcBGenre" prefWidth="124.0" text="Жанр" />
+                        <TableColumn fx:id="tcBDepartment" prefWidth="74.4000244140625" text="Отдел" />
+                        <TableColumn fx:id="tcBAuthors" prefWidth="197.59991455078125" text="Авторы" />
+                        <TableColumn fx:id="tcBCount" prefWidth="109.5999755859375" text="Количество" />
+                    </columns>
+                  </TableView>
+               </center>
+               <bottom>
+                  <TableView fx:id="tvHistoryRB" prefHeight="26.0" prefWidth="1000.0" visible="false" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="tcBInvNum" prefWidth="140.79998475313187" text="Инвентарный номер" />
+                      <TableColumn fx:id="tcBDateIssue" prefWidth="118.40000915527344" text="Дата выдачи" />
+                        <TableColumn fx:id="tcBDateReturn" prefWidth="120.0" text="Дата возврата" />
+                        <TableColumn fx:id="tcBSubscriber" prefWidth="176.0" text="Абонент" />
+                    </columns>
+                  </TableView>
+               </bottom>
+            </BorderPane>
+         </content>
+    </Tab>
+      <Tab text="Абоненты">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Поиск">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="по абонементному номеру">
+                                 <graphic>
+                                    <TextField fx:id="tfFindSubsNumber">
+                                       <contextMenu>
+                                          <ContextMenu>
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" onAction="#onFiltrationOfSubsNum" text="Поиск" />
+                                            </items>
+                                          </ContextMenu>
+                                       </contextMenu></TextField>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" text="по номеру телефона">
+                                 <graphic>
+                                    <TextField fx:id="tfFindPhoneNumber">
+                                       <contextMenu>
+                                          <ContextMenu>
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" onAction="#onFiltrationOfPhoneNum" text="Поиск" />
+                                            </items>
+                                          </ContextMenu>
+                                       </contextMenu></TextField>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#onSelectAll" text="Вывести все" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Работа с данными">
+                          <items>
+                              <MenuItem mnemonicParsing="false" onAction="#onCreateSubscriber" text="Добавить абонента">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                            <MenuItem mnemonicParsing="false" onAction="#onEditSubscriber" text="Редактировать данные">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="U" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                          </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Дополнительно">
+                        <items>
+                              <MenuItem mnemonicParsing="false" onAction="#onIssueCopyBook" text="Выдать книгу">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="DOWN" code="I" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                          <MenuItem mnemonicParsing="false" onAction="#onOpenSubsCard" text="Абонементная карточка">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="A" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator></MenuItem>
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </top>
+               <center>
+                  <TableView fx:id="tvListSubs" onMouseClicked="#onClickedSubscriber" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="tcSId" prefWidth="38.39996415376663" text="№" />
+                      <TableColumn fx:id="tcSFirstName" prefWidth="135.99999618530273" text="Фамилия" />
+                        <TableColumn fx:id="tcSSecondName" prefWidth="113.59999084472656" text="Имя" />
+                        <TableColumn fx:id="tcSMiddleName" prefWidth="144.0" text="Отчество" />
+                        <TableColumn fx:id="tcSPhoneNum" prefWidth="136.79998779296875" text="Телефон" />
+                        <TableColumn fx:id="tcSDateReg" prefWidth="130.4000244140625" text="Дата регистрации" />
+                        <TableColumn fx:id="tcSAddress" prefWidth="297.5999755859375" text="Адрес" />
+                    </columns>
+                  </TableView>
+               </center>
+            </BorderPane>
+         </content>
+      </Tab>
+  </tabs>
+</TabPane>

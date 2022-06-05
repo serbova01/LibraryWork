@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="InsertPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarywork.InsertController">
+   <children>
+      <Pane fx:id="pCreateCB" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="600.0" prefWidth="800.0" spacing="10.0">
+               <children>
+                  <VBox>
+                     <children>
+                        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onOpenInsertB" text="Добавить произведение" VBox.vgrow="ALWAYS" />
+                                    <ListView fx:id="lvBooks" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onOpenInsertEd" text="Добавить издание" />
+                                    <ListView fx:id="lvEditions" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                           <children>
+                              <Label text="Количество" />
+                              <Slider fx:id="sCount" max="20.0" onMouseClicked="#onClickedValue" onMouseDragged="#onChangeValue" value="0.1" />
+                              <Label fx:id="lValueSlider" />
+                              <Button mnemonicParsing="false" onAction="#onAddingTable" text="Добавить в таблицу" />
+                              <Button mnemonicParsing="false" onAction="#onRemovingTable" text="Удалить из таблицы" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <TableView fx:id="tvAddingCB" HBox.hgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="tcNameBook" prefWidth="241.59998166561127" text="Произведение" />
+                            <TableColumn fx:id="tcPublHouse" minWidth="0.0" prefWidth="125.60003662109375" text="Издательство" />
+                              <TableColumn fx:id="tcISBN" prefWidth="165.60000610351562" text="ISBN" />
+                              <TableColumn fx:id="tcCount" prefWidth="89.60003662109375" text="Количество" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onAddCB" text="Сохранить" />
+                        <Button mnemonicParsing="false" onAction="#onClear" text="Отмена" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane fx:id="pCreateEditions" prefHeight="600.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="600.0" prefWidth="800.0" spacing="20.0">
+               <children>
+                  <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="TOP_CENTER" spacing="5.0">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER" spacing="27.0">
+                                       <children>
+                                          <Label text="ISBN" />
+                                          <Label text="Описание" />
+                                          <Label text="Год издания" />
+                                          <Label text="Цена" />
+                                          <Label text="Кол-во стр." />
+                                          <Label text="Издательство" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <TextField fx:id="tfISBN" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="tfDiscription" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="tfYearPubl" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="tfPrice" VBox.vgrow="ALWAYS" />
+                                          <TextField fx:id="tfCountPages" />
+                                          <ComboBox fx:id="cbPublHouses" prefWidth="150.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Button mnemonicParsing="false" onAction="#onOpenPanelPH" text="Добавить издательство" />
+                              <HBox fx:id="pInsertPH" spacing="10.0" visible="false" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                                 <fx:include fx:id="publHousePanel" source="insertPublHouse.fxml" />
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="Обложка" />
+                              <ImageView fx:id="ivImage" fitHeight="317.0" fitWidth="317.0" pickOnBounds="true" preserveRatio="true" />
+                              <Button mnemonicParsing="false" onAction="#onLoadImage" text="Загрузить обложку" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onSaveEdition" text="Сохранить" />
+                        <Button fx:id="bCancelEd" mnemonicParsing="false" onAction="#onCancel" text="Отмена" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane fx:id="pCreateBooks" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox spacing="10.0">
+               <children>
+                  <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" spacing="27.0">
+                                 <children>
+                                    <Label text="Название" />
+                                    <Label text="Жанр" />
+                                    <Label text="Автор(-ы)" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <TextField fx:id="tfNameBook" />
+                                       <ComboBox fx:id="cbGenre" prefWidth="150.0" />
+                                    <ListView fx:id="lvAuthorsBook" onMouseClicked="#onClickedAuthorDel" prefHeight="200.0" prefWidth="200.0" />
+                                    <Button mnemonicParsing="false" onAction="#onOpenPanelAddingG" text="Добавить жанр" />
+                                    <Button mnemonicParsing="false" onAction="#onOpenPanelAddingA" text="Добавить автора" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" spacing="10.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onEditAuthor" text="Редактировать автора" />
+                                    <ListView fx:id="lvAuthors" onMouseClicked="#onClickedAuthorAdd" prefHeight="350.0" prefWidth="248.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox alignment="TOP_CENTER" spacing="5.0">
+                           <children>
+                              <HBox VBox.vgrow="ALWAYS">
+                                 <fx:include fx:id="genrePanel" source="insertGenre.fxml" />
+                              </HBox>
+                              <HBox prefWidth="250.0" VBox.vgrow="ALWAYS">
+                                    <fx:include fx:id="authorPanel" source="insertAuthor.fxml" />
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onSaveBook" text="Сохранить" />
+                        <Button mnemonicParsing="false" onAction="#onCancel" text="Отмена" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children></Pane>
+   </children>
+</AnchorPane>
