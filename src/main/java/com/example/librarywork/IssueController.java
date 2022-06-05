@@ -18,43 +18,75 @@ import javafx.util.Callback;
 import java.sql.*;
 import java.time.LocalDate;
 
+/**
+ * Класс для выдачи книги абоненту.
+ * <p>
+ * Данный класс позволяет выдать книгу.
+ * @author Автор Сербова Алена
+ * @version 1.3
+ */
 public class IssueController {
+    /** Таблица экземпляров книг в наличии */
     public TableView<CopyBookTable> tvListCB;
+    /** Столбец инвентарного номера */
     public TableColumn<CopyBookTable, Integer> tcCBId;
+    /** Столбец названия произведения */
     public TableColumn<CopyBookTable, String> tcCBBook;
+    /** Столбец названия издательства */
     public TableColumn<CopyBookTable, String> tcCBEdition;
+    /** Столбец выбран/не выбран */
     public TableColumn<CopyBookTable, Boolean> tcChooseItem;
-
+    /** Окно приложения */
     private Stage dialogStage;
+    /** Абонент, которому выдается книга */
     private SubscriberTable subscriber;
+    /** Список экземпляров книг в наличии */
     ObservableList<CopyBookTable> listCopiesBook;
-    final String DB_URL = "jdbc:mysql://localhost:3306/library?useSSL=false";;
+    /** Адрес базы данных */
+    final String DB_URL = "jdbc:mysql://localhost:3306/library?useSSL=false";
+    /** Логин для подключения к БД */
     final String LOGIN = "root";
+    /** Пароль для подключения к БД */
     final String PASSWORD = "root_root";
+    /** Statement для выполнения SQL запросов */
     public Statement statement;
+    /** Connection для подключения к БД */
     private Connection connection;
-    private CopyBookTable selectCopyBook;
-
+    /**
+     * Функция изменения абонента, которому выдается книга {@link IssueController#subscriber}
+     * @param subscriber абонент
+     */
     public void setSubscriber(SubscriberTable subscriber){
         this.subscriber = subscriber;
     }
+    /**
+     * Функция изменения окна приложения {@link IssueController#dialogStage}
+     * @param addStage окно прриложения
+     */
     public void setAddStage(Stage addStage) {
         this.dialogStage = addStage;
     }
+    /**
+     * Функция инициализации класса и заполнение таблицы {@link IssueController#tvListCB} и списка
+     * {@link IssueController#listCopiesBook}
+     */
     @FXML
     void initialize(){
         if (connectDB()){
-            selectData("where copiesBook.Status = 'в наличии' ");
+            selectData();
         }
     }
-
-    private void selectData(String whereQuery) {
+    /**
+     * Функция заполнения таблицы {@link IssueController#tvListCB} и списка
+     * {@link IssueController#listCopiesBook}
+     */
+    private void selectData() {
         try {
             listCopiesBook = FXCollections.observableArrayList();
             ResultSet rsSelect = statement.executeQuery("Select * from CopiesBook " +
                     "join Editions on editions.Id = copiesBook.EditionId " +
                     "join Books on books.Id = editions.BookId " +
-                    "join PublishingHouses on PublishingHouses.Id = editions.PublHouseId " + whereQuery);
+                    "join PublishingHouses on PublishingHouses.Id = editions.PublHouseId " + "where copiesBook.Status = 'в наличии' ");
             while(rsSelect.next()){
                 CopyBookTable copyBook = new CopyBookTable(rsSelect.getInt("CopiesBook.Id"),
                         rsSelect.getString("Books.Name"), rsSelect.getString("NamePH"),
@@ -103,20 +135,14 @@ public class IssueController {
                 }
             });
             tvListCB.setItems(listCopiesBook);
-            tvListCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CopyBookTable>() {
-                @Override
-                public void changed(ObservableValue<? extends CopyBookTable>
-                                            observableValue, CopyBookTable student, CopyBookTable t1) {
-                    if (t1 != null) {
-                        selectCopyBook = t1;
-                    }
-                }
-            });
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Функция осуществления подключения к БД и инициализация поля {@link IssueController#statement}
+     * @return состояние подключения
+     */
     public boolean connectDB(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -137,9 +163,9 @@ public class IssueController {
         }
         return true;
     }
-
-
-
+    /**
+     * Функция выдачи выбранных экземпляров из таблицы {@link IssueController#tvListCB} и сохранение данных в БД.
+     */
     public void onIssueCB(ActionEvent actionEvent) {
         ObservableList<Integer> idsCB = FXCollections.observableArrayList();
         for(CopyBookTable copyBookTable : tvListCB.getItems()){
@@ -167,14 +193,16 @@ public class IssueController {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "Книги выданы.", ButtonType.OK);
                     alert.showAndWait();
                 }
-                selectData("where copiesBook.Status = 'в наличии'");
+                selectData();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
-
+    /**
+     * Функция обнуления всех выбранных экземпляров.
+     */
     public void onCancel(ActionEvent actionEvent) {
-        selectData("where copiesBook.Status = 'в наличии'");
+        selectData();
     }
 }

@@ -772,12 +772,14 @@ public class HelloController {
         }
         tvListSubs.setItems(list);
     }
+
     /**
      * Функция фильтрации записей таблицы перечня книг {@link HelloController#tvListBooks} по статусу с использованием элементов
      * управления переключениями {@link HelloController#rimAllStatus}, {@link HelloController#rimIsStatus},
      * {@link HelloController#rimIssueStatus} и {@link HelloController#rimWritingOffStatus}.
      */
     public void onFiltrationOfStatus(ActionEvent actionEvent) {
+        selectDataTables();
         if (rimAllStatus.isSelected()) selectDataTables();
         else{
             if(rimIsStatus.isSelected()) filtrationTableCB("в наличии", "Status");
@@ -793,6 +795,7 @@ public class HelloController {
      */
     public void onFiltrationOfBook(ActionEvent actionEvent) {
         if (tfFindBook != null){
+            selectDataTables();
             filtrationTableCB(tfFindBook.getText(), "Book");
         }
     }
@@ -801,6 +804,7 @@ public class HelloController {
      * {@link HelloController#tfFindNameBook}
      */
     public void onFiltrationOfNameBook(ActionEvent actionEvent) {
+        selectDataTables();
         if(tfFindNameBook!=null) filtrationCatalog(tfFindNameBook.getText(), "NameBook");
     }
     /**
@@ -808,6 +812,7 @@ public class HelloController {
      * {@link HelloController#tfFindAuthor}
      */
     public void onFiltrationOfAuthor(ActionEvent actionEvent) {
+        selectDataTables();
         if(tfFindAuthor!=null) filtrationCatalog(tfFindAuthor.getText(), "Author");
     }
     /**
@@ -815,6 +820,7 @@ public class HelloController {
      * {@link HelloController#tfFindGenre}
      */
     public void onFiltrationOfGenre(ActionEvent actionEvent) {
+        selectDataTables();
         if(tfFindGenre!=null) filtrationCatalog(tfFindGenre.getText(), "Genre");
     }
     /**
@@ -822,6 +828,7 @@ public class HelloController {
      * {@link HelloController#tfFindSubsNumber}
      */
     public void onFiltrationOfSubsNum(ActionEvent actionEvent) {
+        selectDataTables();
         if (tfFindSubsNumber!=null) filtrationListSubs(tfFindSubsNumber.getText(), "SubsNum");
     }
     /**
@@ -829,6 +836,7 @@ public class HelloController {
      * {@link HelloController#tfFindPhoneNumber}
      */
     public void onFiltrationOfPhoneNum(ActionEvent actionEvent) {
+        selectDataTables();
         if (tfFindPhoneNumber!=null) filtrationListSubs(tfFindPhoneNumber.getText(), "PhoneNum");
     }
     /**

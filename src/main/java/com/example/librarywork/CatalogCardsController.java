@@ -94,7 +94,11 @@ public class CatalogCardsController {
 
         }
     }
-
+    /**
+     * Функция поиска издания в {@link CatalogCardsController#listEditions} по идентификатору
+     * @param id идентификатор
+     * @return издание или null
+     */
     private Edition findOfId(String id) {
         for (Edition edition : listEditions){
             if (Integer.valueOf(id) == edition.getId()){

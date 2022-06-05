@@ -26,39 +26,75 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 
+/**
+ * Класс для работы с абонементной карточкой и формуляром читателя.
+ * <p>
+ * Данный класс позволяет скачать текстовый файл абонементной карточки и формуляра читателя, продлить срок возврата выданных книг
+ *  и оформить возврат.
+ * @author Автор Сербова Алена
+ * @version 1.3
+ */
 public class SubsCardController {
+    /** Таблица записей выдачи абоненту книг */
     public TableView<SubsCardTable> tvSubsCard;
+    /** Столбец инвентарного номера */
     public TableColumn<SubsCardTable, Integer> tcInvNum;
+    /** Столбец даты выдачи */
     public TableColumn<SubsCardTable, String> tcDateIssue;
+    /** Столбец даты возврата */
     public TableColumn<SubsCardTable, String> tcDateReturn;
+    /** Столбец отдела */
     public TableColumn<SubsCardTable, String> tcDepartment;
+    /** Столбец авторов и заголовка книги */
     public TableColumn<SubsCardTable, String> tcAuthorsBookName;
+    /** Столбец актуальности записи */
     public TableColumn<SubsCardTable, Boolean> tcRelevance;
+    /** Текстовое поле для данных формуляра читателя */
     public TextArea taDataSubs;
-
+    /** Абонент */
     private SubscriberTable subscriber;
+    /** Окно приложения */
     private Stage dialogStage;
-    final String DB_URL = "jdbc:mysql://localhost:3306/library?useSSL=false";;
+    /** Адрес базы данных */
+    final String DB_URL = "jdbc:mysql://localhost:3306/library?useSSL=false";
+    /** Логин для подключения к БД */
     final String LOGIN = "root";
+    /** Пароль для подключения к БД */
     final String PASSWORD = "root_root";
+    /** Statement для выполнения SQL запросов */
     public Statement statement;
+    /** Connection для подключения к БД */
     private Connection connection;
+    /** Список записей абонементной карточки */
     ObservableList<SubsCardTable> listRecordsSC;
+    /** Список записей, по которым будет оформлен возврат */
     ObservableList<SubsCardTable> listBooksForReturn;
-
+    /**
+     * Функция изменения абонента, которому выдается книга {@link SubsCardController#subscriber}
+     * @param subscriber абонент
+     */
     public void setSubscriber(SubscriberTable subscriber){
         this.subscriber = subscriber;
         selectData();
     }
+    /**
+     * Функция изменения окна приложения {@link SubsCardController#dialogStage}
+     * @param addStage окно прриложения
+     */
     public void setAddStage(Stage addStage) {
         this.dialogStage = addStage;
     }
+    /**
+     * Функция инициализации класса
+     */
     @FXML
     void initialize(){
-        if (connectDB()){
-        }
+        connectDB();
     }
-
+    /**
+     * Функция заполнения формуляра читателя {@link SubsCardController#taDataSubs} и абонементной карточки
+     * {@link SubsCardController#tvSubsCard}
+     */
     private void selectData() {
         try {
             listRecordsSC = FXCollections.observableArrayList();
@@ -139,7 +175,10 @@ public class SubsCardController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Функция осуществления подключения к БД и инициализация поля {@link SubsCardController#statement}
+     * @return состояние подключения
+     */
     public boolean connectDB(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -160,6 +199,13 @@ public class SubsCardController {
         }
         return true;
     }
+    /**
+     * Функция получения короткого имени автора из списка авторов произведения, экземпляр которого есть в абонементной карточке
+     * @param firstName фамилия автора
+     * @param lastName имя автора
+     * @param middleName отчество автора
+     * @return короткое имя автора
+     */
     private StringBuilder ShortName(String firstName, String lastName, String middleName) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(firstName);
@@ -172,6 +218,11 @@ public class SubsCardController {
         }
         return stringBuilder;
     }
+    /**
+     * Функция сохранения файла с заданным названием и текстом
+     * @param title название файла
+     * @param text текст
+     */
     private void downloadFile(String title, String text){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберете папку для сохранения");
@@ -189,6 +240,9 @@ public class SubsCardController {
             }
         }
     }
+    /**
+     * Функция сохранения абонементной карточки.
+     */
     public void onLoadSubsCard(ActionEvent actionEvent) {
         StringBuilder text = new StringBuilder();
         text.append(String.format("%-10s %-10s %-40s %-10s\n", "Инв. номер","|  Отдел","|  Автор и заглавие", "|  Состояние"));
@@ -203,13 +257,17 @@ public class SubsCardController {
                         ShortName(subscriber.getFirstName(), subscriber.getSecondName(), subscriber.getMiddleName()),
                 text.toString());
     }
-
+    /**
+     * Функция сохранения формуляра читателя.
+     */
     public void onLoadDataSubs(ActionEvent actionEvent) {
         downloadFile("Формуляр читателя " + subscriber.getSubsNumber() +" - "+
                         ShortName(subscriber.getFirstName(), subscriber.getSecondName(), subscriber.getMiddleName()),
                 taDataSubs.getText());
     }
-
+    /**
+     * Функция продления срока выдачи экземпляров книги, запись о которых еще актуальна, на 1 месяц.
+     */
     public void onEditDateReturn(ActionEvent actionEvent) {
         if (tvSubsCard.getItems().size()>0){
             try {
@@ -225,7 +283,9 @@ public class SubsCardController {
             selectData();
         }
     }
-
+    /**
+     * Функция открытия окна выдачи книги.
+     */
     public void onOpenIssue(ActionEvent actionEvent) {
         if (subscriber!= null){
             FXMLLoader loader = new FXMLLoader();
@@ -252,7 +312,9 @@ public class SubsCardController {
             }
         }
     }
-
+    /**
+     * Функция оформления возврата.
+     */
     public void onReturnBooks(ActionEvent actionEvent) {
         if (listBooksForReturn.size()>0){
             try {

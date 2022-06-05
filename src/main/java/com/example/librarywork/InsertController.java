@@ -91,6 +91,8 @@ public class InsertController {
     private Stage dialogStage;
     /** Параметр отображения данных */
     private String parameter;
+    /** Список произведений */
+    private ObservableList<Book> booksListViews;
     /** Адрес базы данных */
     final String DB_URL1 = "jdbc:mysql://localhost:3306/library?useSSL=false";
     /** Логин для подключения к БД */
@@ -101,8 +103,6 @@ public class InsertController {
     public Statement statement1;
     /** Connection для подключения к БД */
     private Connection connection1;
-    /** Список произведений */
-    private ObservableList<Book> booksListViews;
     /** Список изданий по выбранному произведению */
     private ObservableList<String> listEditions;
     /** Список записей о привезенныз книгах */
@@ -899,10 +899,10 @@ public class InsertController {
         addStage.initModality(Modality.WINDOW_MODAL);
         addStage.initOwner(HelloApplication.getPrimaryStage());
         Scene scene = null;
-        scene = new Scene(page, 800,515);
-        addStage.setScene(scene);
         switch (parameter){
             case "CreateB":{
+                scene = new Scene(page, 800,515);
+                addStage.setScene(scene);
                 InsertController controller = loader.getController();
                 controller.setAddStage(addStage);
                 controller.setParameter(parameter);
@@ -910,6 +910,8 @@ public class InsertController {
                 break;
             }
             case "CreateEd":{
+                scene = new Scene(page, 800,600);
+                addStage.setScene(scene);
                 InsertController controller = loader.getController();
                 controller.setAddStage(addStage);
                 controller.setParameter(parameter);
@@ -918,6 +920,8 @@ public class InsertController {
                 break;
             }
             case "EditA":{
+                scene = new Scene(page, 250,270);
+                addStage.setScene(scene);
                 AuthorController controller = loader.getController();
                 controller.setAddStage(addStage);
                 controller.setAuthorEdit(selectAuthor);

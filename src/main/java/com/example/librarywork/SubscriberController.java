@@ -11,31 +11,59 @@ import javafx.stage.Stage;
 import java.sql.*;
 import java.time.LocalDate;
 
+/**
+ * Класс для добавления и редактирования данных абонента.
+ * <p>
+ * Данный класс добавить нового абонента или отредактировать данные текущего абонента.
+ * @author Автор Сербова Алена
+ * @version 1.3
+ */
 public class SubscriberController {
+    /** Текстовое поле фамилии абонента */
     public TextField tfSFirstName;
+    /** Текстовое поле имени абонента */
     public TextField tfSSecondName;
+    /** Текстовое поле отчества абонента */
     public TextField tfSMiddleName;
+    /** Текстовое поле номера телефона абонента */
     public TextField tfSPhoneNum;
+    /** Текстовое поле улицы проживания */
     public TextField tfSStreet;
+    /** Текстовое поле дома проживания */
     public TextField tfSHouse;
+    /** Текстовое поле квартиры проживания */
     public TextField tfSFlat;
-
-    final String DB_URL1 = "jdbc:mysql://localhost:3306/library?useSSL=false";;
+    /** Адрес базы данных */
+    final String DB_URL1 = "jdbc:mysql://localhost:3306/library?useSSL=false";
+    /** Логин для подключения к БД */
     final String LOGIN1 = "root";
+    /** Пароль для подключения к БД */
     final String PASSWORD1 = "root_root";
+    /** Statement для выполнения SQL запросов */
     public Statement statement1;
+    /** Connection для подключения к БД */
     private Connection connection1;
+    /** Окно приложения */
     private Stage dialogStage;
+    /** CheckInfo для проверок текстовых полей */
     private CheckInfo checkInfo;
+    /** Абонент, данные которого нужно редактировать */
     private SubscriberTable subscriber;
-
+    /**
+     * Функция инициализации класса и {@link SubscriberController#checkInfo}
+     */
     @FXML
     void initialize(){
         if (connectDB()){
             checkInfo = new CheckInfo();
         }
     }
-
+    /**
+     * Функция заполнения тестовых полей {@link SubscriberController#tfSFirstName}, {@link SubscriberController#tfSSecondName},
+     * {@link SubscriberController#tfSMiddleName}, {@link SubscriberController#tfSPhoneNum},
+     * {@link SubscriberController#tfSStreet}, {@link SubscriberController#tfSHouse}, {@link SubscriberController#tfSFlat}
+     * данными {@link SubscriberController#subscriber}
+     */
     private void showSubscriber() {
         tfSFirstName.setText(subscriber.getFirstName());
         tfSSecondName.setText(subscriber.getSecondName());
@@ -46,15 +74,25 @@ public class SubscriberController {
         tfSHouse.setText(address[1]);
         if (address.length>2) tfSFlat.setText(address[2]);
     }
-
+    /**
+     * Функция изменения окна приложения {@link SubscriberController#dialogStage}
+     * @param addStage окно прриложения
+     */
     public void setAddStage(Stage addStage) {
         this.dialogStage = addStage;
     }
+    /**
+     * Функция изменения абонента для редактирования {@link SubscriberController#subscriber}
+     * @param subscriber абонент
+     */
     public void setSubscriberEdit(SubscriberTable subscriber) {
         this.subscriber = subscriber;
         showSubscriber();
     }
-
+    /**
+     * Функция осуществления подключения к БД и инициализация поля {@link SubscriberController#statement1}
+     * @return состояние подключения
+     */
     public boolean connectDB(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -76,7 +114,9 @@ public class SubscriberController {
         }
         return true;
     }
-
+    /**
+     * Функция проверки данных перед сохранение изменений в БД
+     */
     public void onAddSubscriber(ActionEvent actionEvent) {
         String house = " ";
         System.out.println("checkInfoIsLetter(tfSStreet.getText()): " + checkInfo.checkInfoIsLetter(tfSStreet.getText()));
@@ -110,7 +150,9 @@ public class SubscriberController {
             alert.showAndWait();
         }
     }
-
+    /**
+     * Функция сохранения изменений в редактируемом абоненте {@link SubscriberController#subscriber}
+     */
     private void editSubscriber() {
         try {
             String flat = " ";
@@ -127,7 +169,9 @@ public class SubscriberController {
             System.out.println(e.getMessage());
         }
     }
-
+    /**
+     * Функция добавления данных в БД.
+     */
     private void insertSubscriber() {
         try {
             String flat = " ";
@@ -148,7 +192,11 @@ public class SubscriberController {
             System.out.println(e.getMessage());
         }
     }
-
+    /**
+     * Функция очищения тестовых полей {@link SubscriberController#tfSFirstName}, {@link SubscriberController#tfSSecondName},
+     * {@link SubscriberController#tfSMiddleName}, {@link SubscriberController#tfSPhoneNum}, {@link SubscriberController#tfSStreet},
+     * {@link SubscriberController#tfSHouse} и {@link SubscriberController#tfSFlat}
+     */
     public void onCancel(ActionEvent actionEvent) {
         tfSHouse.clear();
         tfSStreet.clear();
