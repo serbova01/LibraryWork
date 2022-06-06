@@ -84,24 +84,18 @@ public class InsertPHController {
      */
     public void onSave(ActionEvent actionEvent) {
         if (connectDB()){
-           if(checkInfo.checkInfoIsLetter(tfNamePH.getText())){
-               try {
-                   int row = statement.executeUpdate("Insert into PublishingHouses (NamePH, Place) " +
-                           "values ('"+ tfNamePH.getText() + "', '" + sCity.getValue() + "')");
-                   if (row > 0){
-                       Alert alert = new Alert(Alert.AlertType.INFORMATION, "Издательство успешно добавлено.", ButtonType.OK);
-                       alert.showAndWait();
-                       InsertPanelController.selectFormCreateEd();
-                   }
-               } catch (SQLException e) {
-                   Alert alert = new Alert(Alert.AlertType.INFORMATION, "Такое издательство уже есть в системе.", ButtonType.OK);
-                   alert.showAndWait();
-               }
-           } else{
-             Alert alert = new Alert(Alert.AlertType.WARNING , "Поле Название издательства должно содержать\n" +
-                     " символы алфавита.", ButtonType.OK);
-             alert.showAndWait();
-           }
+            try {
+                int row = statement.executeUpdate("Insert into PublishingHouses (NamePH, Place) " +
+                        "values ('"+ tfNamePH.getText() + "', '" + sCity.getValue() + "')");
+                if (row > 0){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Издательство успешно добавлено.", ButtonType.OK);
+                    alert.showAndWait();
+                    InsertPanelController.selectFormCreateEd();
+                }
+            } catch (SQLException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Такое издательство уже есть в системе.", ButtonType.OK);
+                alert.showAndWait();
+            }
         }
     }
     /**

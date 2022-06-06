@@ -639,7 +639,7 @@ public class InsertController {
      */
     public void onSaveBook(ActionEvent actionEvent) {
 
-        if (lvAuthorsBook.getItems().size()>0 && tfNameBook!=null && cbGenre.getValue()!=null && checkInfo.checkInfoIsText(tfNameBook.getText())){
+        if (lvAuthorsBook.getItems().size()>0 && tfNameBook!=null && cbGenre.getValue()!=null){
             try {
                 String genre = cbGenre.getSelectionModel().getSelectedItem().toString();
                 ResultSet rsBookDulicate = statement1.executeQuery("Select * from books where books.Name = '" +
