@@ -213,7 +213,6 @@ public class HelloController {
                     " join Genres on books.GenreId = Genres.Id " +
                     "join Books_Authors on books.Id = books_authors.BookId " +
                     "join Authors on books_authors.AuthorId = authors.Id");
-            System.out.println("Select data Books");
             while (resultSet.next()) {
                 StringBuilder stringBuilder = ShortName(resultSet.getString("FirstName"),
                         resultSet.getString("LastName"), resultSet.getString("MiddleName"));
@@ -228,7 +227,6 @@ public class HelloController {
             }
             for(int i=0; i<catalog.size(); i++){
                 int id = catalog.get(i).getId();
-                System.out.println("catalog.get(i).getId() = " + catalog.get(i).getId());
                 StringBuilder strAuthors = new StringBuilder();
                 strAuthors.append(catalog.get(i).getAuthors());
                 String fullNameAuthors = catalog.get(i).getAuthorsFullName();
@@ -270,16 +268,12 @@ public class HelloController {
                                             observableValue, Book student, Book t1) {
                     if (t1 != null) {
                         selectBook = t1;
-                        System.out.println("selectBook: " + selectBook);
-                        System.out.println("t1: " + t1);
                         showBook(t1);
                     }
                 }
             });
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println(e.getMessage());
-            System.out.println("Error select data");
         }
         try {
             ResultSet resultSet = statement.executeQuery("Select * from Subscribers");
@@ -324,7 +318,6 @@ public class HelloController {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-            System.out.println("Error select data");
         }
 
     }
@@ -413,7 +406,6 @@ public class HelloController {
         }
         catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error select historyReaderCB " + rowCount);
         }
     }
     /**
@@ -454,7 +446,6 @@ public class HelloController {
         }
         catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error select historyReaderCB" + rowCount);
         }
     }
     /**
@@ -541,7 +532,6 @@ public class HelloController {
                             "where id = " + selectCopyBook.getInventoryNumber());
                     resultSet.next();
                     editionIdForEdit = resultSet.getInt(1);
-                    System.out.println("editionIdForEdit: " + editionIdForEdit);
                     showDialog("insertCB.fxml", "Редактирование сведений об издании.", "EditEd");
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
@@ -577,7 +567,6 @@ public class HelloController {
         );
         Parent page = null;
         try {
-            System.out.println("resource: " + resource);
             page = loader.load();
             Stage addStage = new Stage();
             addStage.setTitle(title);

@@ -396,7 +396,6 @@ public class InsertController {
                 Book booksListView = new Book(rsBooks.getInt("Id"),
                         rsBooks.getString("Name"), stringBuilder.toString());
                 int i = containsNameBook(booksListView.getId(), booksListView.getName());
-                System.out.println(i);
                 if (i!=-1){
                     StringBuilder strAuthors = new StringBuilder();
                     strAuthors.append(booksListViews.get(i).getAuthors());
@@ -445,7 +444,6 @@ public class InsertController {
                                             public void changed(ObservableValue<? extends String>
                                                                         changed, String oldValue, String newValue){
                                                 selectEdition= newValue;
-                                                System.out.println(selectEdition);
                                             }
                                         });
                             } catch (SQLException e) {
@@ -470,7 +468,6 @@ public class InsertController {
      * Функция открытия окна формы добавления издания выбранному произведению {@link InsertController#editionBookId}.
      */
     public void onOpenInsertEd(ActionEvent actionEvent) {
-        System.out.println(editionBookId);
         if (editionBookId > 0){
             showDialog("insertCB.fxml", "Добавление издания","CreateEd");
         }
@@ -540,7 +537,6 @@ public class InsertController {
                     }
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
-                    System.out.println(sqlQuery);
                 }
             }
             tvAddingCB.getItems().clear();
@@ -570,7 +566,6 @@ public class InsertController {
                             String[] pathImage = ivImage.getImage().getUrl().split("/");
                             ImageBook imageBook = new ImageBook();
                             imageBook.SaveImage(fileImage);
-                            System.out.println(editionBookId);
                             if (editionBookId>0){
                                 String sql = "Insert into editions (Discription, YearPublication, " +
                                         "CountPage, Image, BookId, PublHouseId, ISBN, CountCopies, Price) values " +
@@ -578,7 +573,6 @@ public class InsertController {
                                         tfCountPages.getText() + ", '" + pathImage[pathImage.length-1] + "', "+
                                         editionBookId + ", " + publHouseId + ", '" + tfISBN.getText() + "', 0," +
                                         tfPrice.getText() + ")";
-                                System.out.println(sql);
                                 int row = statement1.executeUpdate(sql);
                                 if (row > 0){
                                     getMessage(Alert.AlertType.INFORMATION, "Издание было успешно добавлено.");
@@ -596,7 +590,6 @@ public class InsertController {
                     "заполнить поля Издательство и ISBN корректными\n данными.");
         }
         else{
-            System.out.println("edit");
             if (checkInfo.checkInfoISBN(tfISBN.getText()) && !cbPublHouses.getValue().equals(null) &&
                     ivImage.getImage() != null){
                 if(checkInfo.checkInfoIsNumeric(tfCountPages.getText()) && checkInfo.checkInfoIsFloat(tfPrice.getText())){
@@ -664,17 +657,12 @@ public class InsertController {
                                 "MiddleName = '" + author.getMiddleName() + "'");
                         rsAuthorId.next();
                         authorsId.add(rsAuthorId.getInt("Id"));
-                        System.out.print("rsAuthorId is cool");
                     }catch (SQLException e){
-                        System.out.print("rsAuthorId: ");
                         System.out.println(e.getMessage());
                     }
                 }
                 boolean isDublicate = false;
-                System.out.print("rsBookDulicate.getRow() = " + rowBookDubl);
                 if (rowBookDubl==0){
-                    System.out.println("isDublicate is false");
-                    System.out.println("bookEdit: " + bookEdit);
                     if (bookEdit == null) insertDataBook(genre, authorsId);
                     else updateDataBook(genre, authorsId);
                 }
@@ -691,7 +679,6 @@ public class InsertController {
                                     break;
                                 }
                             }catch (SQLException e){
-                                System.out.print("rsFindDuplicate: ");
                                 System.out.println(e.getMessage());
                             }
                         }
@@ -700,7 +687,6 @@ public class InsertController {
                         }
                     }
                     if (!isDublicate){
-                        System.out.println(bookEdit);
                         if (bookEdit==null) insertDataBook(genre, authorsId);
                         else updateDataBook(genre, authorsId);
                     }
@@ -708,7 +694,6 @@ public class InsertController {
 
 
             } catch (SQLException e) {
-                System.out.println("rsBookDulicate: ");
                 System.out.println(e.getMessage());
             }
         }
@@ -801,14 +786,12 @@ public class InsertController {
      */
     private void updateDataBook(String genre, ObservableList<Integer> authorsId){
         try {
-            System.out.println("authorsId = " + authorsId.size());
             ResultSet rsGenreId = statement1.executeQuery("Select Id from genres where genres.Name = '" + genre +"'");
             rsGenreId.next();
             int genreID = rsGenreId.getInt("Id");
             int rowBooks = statement1.executeUpdate("Update Books set Name = '" + tfNameBook.getText() +"', " +
                     "GenreId = "+ genreID+ " where id = "+ bookEdit.getId());
             rsGenreId.close();
-            System.out.println("bookEdit.getId(): " + bookEdit.getId());
             int rowDelBooksAuthors = statement1.executeUpdate("Delete from Books_Authors where BookId = " +
                     bookEdit.getId());
             StringBuilder sqlQuery = new StringBuilder();
@@ -818,8 +801,6 @@ public class InsertController {
                 if (i+1 != authorsId.size()) sqlQuery.append(", ");
             }
             int rowInsertBooksAuthors = statement1.executeUpdate(sqlQuery.toString());
-            System.out.println("rowBooks: " + rowBooks);
-            System.out.println("rowInsertBooksAuthors: " + rowInsertBooksAuthors);
             if (rowBooks>0 && rowInsertBooksAuthors>0){
                 getMessage(Alert.AlertType.INFORMATION, "Произведение успешно изменено.");
             }
@@ -838,7 +819,6 @@ public class InsertController {
             ResultSet rsGenreId = statement1.executeQuery("Select Id from genres where genres.Name = '" + genre +"'");
             rsGenreId.next();
             int genreID = rsGenreId.getInt("Id");
-            System.out.println("genreID: " + genreID);
             int rowBooks = statement1.executeUpdate("Insert into books (Name, GenreId) values ('"+ tfNameBook.getText() +
                     "', "+ genreID +")");
             rsGenreId.close();
@@ -846,7 +826,6 @@ public class InsertController {
                 ResultSet rsBookId = statement1.executeQuery("Select max(Id) from books");
                 rsBookId.next();
                 int bookId = rsBookId.getInt(1);
-                System.out.println("bookId: " + bookId);
                 String sqlInsertBookAuthor="Insert into books_authors (BookId, AuthorId) values ";
                 StringBuilder secondPartSQL = new StringBuilder();
                 for (int i=0; i<authorsId.size(); i++){
@@ -1027,9 +1006,7 @@ public class InsertController {
         authorPanel.setVisible(false);
         lvAuthorsBook.getItems().clear();
         genrePanelController.tfClear();
-        System.out.println(genrePanelController.tfNameGenre.getText());
         authorPanelController.tfClear();
-        System.out.println(authorPanelController.tfFirstName.getText());
     }
     /**
      * Функция отображения панели компановки для редактирования выбранного автора {@link InsertController#selectAuthor}.

@@ -119,8 +119,6 @@ public class SubscriberController {
      */
     public void onAddSubscriber(ActionEvent actionEvent) {
         String house = " ";
-        System.out.println("checkInfoIsLetter(tfSStreet.getText()): " + checkInfo.checkInfoIsLetter(tfSStreet.getText()));
-        System.out.println("checkInfoIsLetterOrDigit(house): " + checkInfo.checkInfoIsLetterOrDigit(house));
         if (tfSHouse != null) house = tfSHouse.getText();
         if (checkInfo.checkInfoIsLetter(tfSFirstName.getText()) && checkInfo.checkInfoIsLetter(tfSSecondName.getText())
                 && checkInfo.checkInfoPhoneNumber(tfSPhoneNum.getText()) && checkInfo.checkInfoIsLetter(tfSStreet.getText())

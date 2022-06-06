@@ -81,7 +81,6 @@ public class GenreController {
             try {
                 if (checkInfo.checkInfoIsLetter(tfNameGenre.getText())){
                     String department = newDepartment();
-                    System.out.println("department: " + department);
                     int rowInsertGenre = statement.executeUpdate("Insert into genres (Name, Department) " +
                             "values ('" + tfNameGenre.getText() +"', '"+ department +"')");
                     if (rowInsertGenre > 0){

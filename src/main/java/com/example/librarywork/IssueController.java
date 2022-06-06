@@ -185,7 +185,6 @@ public class IssueController {
                 e.printStackTrace();
             }
         }
-        System.out.println(query);
         if (idsCB.size()>0){
             try {
                 int rowInsertHR = statement.executeUpdate(query.toString());
@@ -195,7 +194,7 @@ public class IssueController {
                 }
                 selectData();
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
     }
