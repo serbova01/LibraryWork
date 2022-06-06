@@ -106,6 +106,7 @@ public class SubsCardController {
             dataSubs.append("\nФамилия\t\t" + rsDataSubs.getString("FirstName"));
             dataSubs.append("\nИмя, Отчество\t\t" + rsDataSubs.getString("SecondName")
                     + " "+ rsDataSubs.getString("MiddleName"));
+            dataSubs.append("\nНомер телефона\t\t" + rsDataSubs.getString("PhoneNumber"));
             StringBuilder address = new StringBuilder();
             address.append(rsDataSubs.getString("Street")); address.append(", ");
             address.append(rsDataSubs.getString("House"));
